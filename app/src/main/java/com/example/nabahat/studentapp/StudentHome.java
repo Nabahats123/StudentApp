@@ -59,30 +59,26 @@ public class StudentHome extends AppCompatActivity {
         GiveFeeback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Student").child(userId);
-
-
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                        if (dataSnapshot.exists()){
                            String store= dataSnapshot.child("busnumber").getValue(String.class);
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Driver");
-
-
-
                         FirebaseDatabase.getInstance().getReference().child("Driver").orderByChild("busnumber").equalTo(store)
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()){
                                             for (DataSnapshot data : dataSnapshot.getChildren()){
-                                                String DrivrID = data.child("id").getValue(String.class);
-                                                String DriverName
-                                                String DriverEmail
-                                                String DriverBus
+                                                String DriverID = data.child("id").getValue(String.class);
+                                                String DriverName = data.child("username").getValue(String.class);
+                                                String DriverEmail = data.child("email").getValue(String.class);
+                                                String DriverBus = data.child("busnumber").getValue(String.class);
+                                                Log.d("MyApp",DriverBus);
                                                 //starItem.setIcon(R.drawable.star);
                                             }
                                         }
@@ -90,7 +86,7 @@ public class StudentHome extends AppCompatActivity {
 
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
-                                        Log.i("fyales","The dataChanged");
+
                                     }
                                 });}
                     }
