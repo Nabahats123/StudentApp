@@ -1,7 +1,9 @@
 package com.example.nabahat.studentapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -62,17 +64,52 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String email = StudentEmail.getText().toString();
                 final String password = StudentPassword.getText().toString();
-                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(MainActivity.this, "Sign In Error"+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                if (email.equals("") || password.equals("") ) {
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                    builder.setTitle("Error")
+                            .setMessage("Please enter Email and Password")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+                else {
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                AlertDialog.Builder builder;
+                                builder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                                builder.setTitle("Error")
+                                        .setMessage(task.getException().getMessage())
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // continue with delete
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // do nothing
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                              //  Toast.makeText(MainActivity.this, "Sign In Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+
                         }
-
-
-                    }
-                });
-
+                    });
+                }
             }
         });
 
@@ -85,31 +122,65 @@ public class MainActivity extends AppCompatActivity {
                 final  String SPassword = StudentPassword.getText().toString();
                 final  String SPhone = StudentPhone.getText().toString();
                 final  String SBusNumber = StudentBusNumber.getText().toString();
-
-
-                mAuth.createUserWithEmailAndPassword(SEmail, SPassword).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(MainActivity.this, "Sign Up Error"+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }else
-                        {
-                            String user_Id = mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference("Student").child(user_Id);
-                            current_user_db.setValue(true);
-                            Student student = new Student(user_Id, SName, SEmail, SPassword, SPhone, SBusNumber);
-                            current_user_db.setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(!task.isSuccessful()){
-                                        Toast.makeText(MainActivity.this, "Record Not Added"+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
+                if (SName.equals("") || SPassword.equals("") || SBusNumber.equals("") || SEmail.equals("") || SPhone.equals("")) {
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                    builder.setTitle("Error")
+                            .setMessage("Please Enter All Details")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
                                 }
-                            });
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+                else {
 
+                    mAuth.createUserWithEmailAndPassword(SEmail, SPassword).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(MainActivity.this, "Sign Up Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                String user_Id = mAuth.getCurrentUser().getUid();
+                                DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference("Student").child(user_Id);
+                                current_user_db.setValue(true);
+                                Student student = new Student(user_Id, SName, SEmail, SPassword, SPhone, SBusNumber);
+                                current_user_db.setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (!task.isSuccessful()) {
+                                            AlertDialog.Builder builder;
+                                            builder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                                            builder.setTitle("Error")
+                                                    .setMessage(task.getException().getMessage())
+                                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            // continue with delete
+                                                        }
+                                                    })
+                                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            // do nothing
+                                                        }
+                                                    })
+                                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                                    .show();
+                                            //Toast.makeText(MainActivity.this, "Record Not Added" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+
+                            }
                         }
-                    }
-                });
+                    });
+                }
 
             }
         });
