@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical"
+
+    tools:context="com.example.nabahat.studentapp.GiveFeedback"
+    tools:layout_editor_absoluteX="8dp"
+    tools:layout_editor_absoluteY="8dp">
+
+    <EditText
+        android:id="@+id/lay_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="134dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:hint="Enter your Feedback"
+        tools:layout_editor_absoluteX="70dp"
+        tools:layout_editor_absoluteY="80dp" />
+
+    <Button
+        android:id="@+id/lay_send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Send" />
+</LinearLayout>

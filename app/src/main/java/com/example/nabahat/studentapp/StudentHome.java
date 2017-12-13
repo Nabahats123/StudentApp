@@ -131,6 +131,14 @@ public class StudentHome extends AppCompatActivity {
                 finish();
             }
         });
+        GiveFeeback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Intent feedback = new Intent(StudentHome.this, GiveFeedback.class);
+                startActivity(feedback);
+                finish();
+            }
+        });
 
 
 
