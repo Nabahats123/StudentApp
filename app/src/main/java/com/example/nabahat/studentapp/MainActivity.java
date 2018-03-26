@@ -51,13 +51,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        StudentName = findViewById(R.id.lay_name);
-        StudentEmail = findViewById(R.id.lay_email);
-        StudentPhone =  findViewById(R.id.lay_phone);
-        StudentPassword = findViewById(R.id.lay_password);
-        StudentBusNumber = findViewById(R.id.lay_busnumber);
-        SignIn =  findViewById(R.id.lay_signin);
-        SignUp = findViewById(R.id.lay_signup);
+        StudentName = (EditText) findViewById(R.id.lay_name);
+        StudentEmail = (EditText) findViewById(R.id.lay_email);
+        StudentPhone = (EditText) findViewById(R.id.lay_phone);
+        StudentPassword = (EditText) findViewById(R.id.lay_password);
+        StudentBusNumber = (EditText) findViewById(R.id.lay_busnumber);
+        SignIn = (TextView) findViewById(R.id.lay_signin);
+        SignUp = (TextView) findViewById(R.id.lay_signup);
 
         SignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         SignUp.setOnClickListener(new View.OnClickListener() {
 

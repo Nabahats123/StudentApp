@@ -45,7 +45,24 @@
             android:background="@drawable/angle2"
             android:gravity="center"
             android:padding="16dp"
-            android:text="GIve Feedback"
+            android:text="View Driver Details "
+            android:textColor="#fff"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/lay_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="28dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="32dp"
+            android:layout_weight="1"
+            android:background="@drawable/angle2"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="Register"
             android:textColor="#fff"
             android:textSize="16dp" />
 
@@ -65,6 +82,9 @@
             android:text="Sign Out"
             android:textColor="#fff"
             android:textSize="16dp" />
+
     </LinearLayout>
+
+
 
 </FrameLayout>

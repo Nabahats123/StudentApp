@@ -1,15 +1,19 @@
 package com.example.nabahat.studentapp;
 
+import java.util.Date;
+
 /**
  * Created by Nabahat on 12/13/2017.
  */
 
 public class Feedback {
 
-    public Feedback(String studentid, String driverid, String feedback) {
+    public Feedback(String studentid, String driverid, String feedback,String date , float rating) {
         Studentid = studentid;
         Driverid = driverid;
         Feedback = feedback;
+        Rating = rating;
+        Date = date;
     }
 
     public String getStudentid() {
@@ -39,6 +43,18 @@ public class Feedback {
     String Studentid;
     String Driverid;
     String Feedback;
+    float Rating;
+    String Date;
+
+    public float getRating() {
+        return Rating;
+    }
+
+    public void setRating(float rating) {
+        Rating = rating;
+    }
+
+
     Feedback(){}
 
 }

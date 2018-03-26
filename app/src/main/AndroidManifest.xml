@@ -38,7 +38,8 @@
             android:name=".StudentMapsActivity"
             android:label="@string/title_activity_student_maps" />
         <activity android:name=".StudentHome" />
-        <activity android:name=".GiveFeedback"></activity>
+        <activity android:name=".GiveFeedback" />
+        <activity android:name=".RegisterationForm"></activity>
     </application>
 
 </manifest>

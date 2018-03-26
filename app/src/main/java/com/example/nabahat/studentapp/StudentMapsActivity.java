@@ -93,24 +93,22 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
             return;
         }
         buildGoogleApiClient();
         mMap.setMyLocationEnabled(true);
-        double lat= Double.parseDouble(latitude);
+        if (i==1){double lat= Double.parseDouble(latitude);
         double lon= Double.parseDouble(longitude);
         LatLng latLng = new LatLng(lat, lon);
-
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        if (i==1){
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Driver Location"));
-            //getDirection(latLng);
-            i = 2;
-        }
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+        mMap.addMarker(new MarkerOptions().position(latLng).title("Driver Location"));
+        //getDirection(latLng);
+   //     Toast.makeText(StudentMapsActivity.this, "my", Toast.LENGTH_SHORT).show();
+
+
+        i=2;}
+    //    mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
 
 
     }
@@ -128,9 +126,7 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
     public void onLocationChanged(Location location) {
         mLastLocation = location;
 
-
-
-    }
+      }
     @Override
     public void onBackPressed()
     {
@@ -146,7 +142,7 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
         //mLocationRequest = new LocationRequest();
        // mLocationRequest.setInterval(500);
        // mLocationRequest.setFastestInterval(500);
-        requestlatlong();
+       // requestlatlong();
        // mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         if (ActivityCompat.checkSelfPermission(StudentMapsActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(StudentMapsActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -165,9 +161,7 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
         //Location.distanceBetween(latLng.latitude, latLng.longitude, exp.latitude,exp.longitude, results);
         distance.snippet("Distance = " + results[0] + "m");
         //mMap.addMarker(distance);
-   }
-
-    private void requestlatlong() {
+        // DatabaseReference georef = FirebaseDatabase.getInstance().getReference("DriverLocation");
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Student").child(userId);
         ref.addValueEventListener(new ValueEventListener() {
@@ -189,7 +183,6 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
                                             mref.child("DriverLocation").child(id).child("l").addValueEventListener(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
-
                                                     String lat = String.valueOf(dataSnapshot.child("0").getValue(Double.class));
                                                     String lon = String.valueOf(dataSnapshot.child("1").getValue(Double.class));
                                                     Log.i("Data", String.valueOf(dataSnapshot.child("0").getValue(Double.class)));
@@ -199,11 +192,6 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
                                                     LatLng latLng = new LatLng(clat, clon);
                                                     Toast.makeText(StudentMapsActivity.this, "new "+lat + "    " + lon, Toast.LENGTH_SHORT).show();
                                                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                                                    if (i==1){
-                                                        mMap.addMarker(new MarkerOptions().position(latLng).title("Driver Location"));
-                                                        //getDirection(latLng);
-                                                        i = 2;
-                                                    }
                                                     mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
 //
                                                 }
@@ -231,11 +219,13 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
 
             }
         });
-    }
 
+   }
 
-    @Override
+        @Override
     public void onConnectionSuspended(int i) {
+        startActivity(new Intent(StudentMapsActivity.this, StudentHome.class));
+        finish();
     }
 
     @Override
