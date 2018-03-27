@@ -29,8 +29,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -70,25 +73,98 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
     LocationRequest mLocationRequest;
     FirebaseDatabase ref;
 
+    Marker userLocation = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_maps);
+
+        buildGoogleApiClient();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(map);
         mapFragment.getMapAsync(this);
 
-        Intent iin= getIntent();
-        Bundle b = iin.getExtras();
-        if(b!=null)
-        {
-            latitude =(String) b.get("latitude");
-            longitude = (String) b.get("longitude");
-            //Toast.makeText(StudentMapsActivity.this, j, Toast.LENGTH_SHORT).show();
+//        Intent iin= getIntent();
+//        Bundle b = iin.getExtras();
+//        if(b!=null)
+//        {
+//            latitude =(String) b.get("latitude");
+//            longitude = (String) b.get("longitude");
+//            //Toast.makeText(StudentMapsActivity.this, j, Toast.LENGTH_SHORT).show();
+//
+//        }
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Student").child(userId);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String store= dataSnapshot.child("busnumber").getValue(String.class);
+                    final DatabaseReference mref = FirebaseDatabase.getInstance().getReference();
+                    mref.child("Driver").orderByChild("busnumber").equalTo(store)
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Log.i("Data Received",dataSnapshot.toString());
+                                    if (dataSnapshot.exists()) {
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            Log.i("Data", ds.getValue(Driver.class).id);
+                                            Driver driver = ds.getValue(Driver.class);
+                                            String id = driver.id; //it will have id stored in it, you can use it further as you like
+                                            mref.child("DriverLocation").child(id).child("l").addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    String lat = String.valueOf(dataSnapshot.child("0").getValue(Double.class));
+                                                    String lon = String.valueOf(dataSnapshot.child("1").getValue(Double.class));
+                                                    Log.i("Data", String.valueOf(dataSnapshot.child("0").getValue(Double.class)));
+                                                    Log.i("Data", String.valueOf(dataSnapshot.child("1").getValue(Double.class)));
+                                                    double clat= Double.parseDouble(lat);
+                                                    double clon= Double.parseDouble(lon);
+                                                    LatLng latLng = new LatLng(clat, clon);
+                                                    Toast.makeText(StudentMapsActivity.this, "N Cordinates"+lat + "    " + lon, Toast.LENGTH_SHORT).show();
+                                                    if(userLocation==null){
+                                                        MarkerOptions options = new MarkerOptions()
+                                                                .title("Location")
+                                                                .draggable(false)
+                                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
+                                                                .position(latLng);
+                                                        userLocation = mMap.addMarker(options);
 
-        }
+
+                                                    }else{
+                                                        userLocation.setPosition(latLng);
+                                                    }
+                                                    CameraPosition cameraPosition = CameraPosition.builder().target(latLng).zoom(18).build();
+                                                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                        }
+//
+                                    }
+                                    else{Toast.makeText(StudentMapsActivity.this, "No Snapshot", Toast.LENGTH_SHORT).show();}
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });}
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -96,18 +172,18 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        buildGoogleApiClient();
         mMap.setMyLocationEnabled(true);
-        if (i==1){double lat= Double.parseDouble(latitude);
-        double lon= Double.parseDouble(longitude);
-        LatLng latLng = new LatLng(lat, lon);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Driver Location"));
-        //getDirection(latLng);
-   //     Toast.makeText(StudentMapsActivity.this, "my", Toast.LENGTH_SHORT).show();
-
-
-        i=2;}
+//        if (i==1){double lat= Double.parseDouble(latitude);
+//        double lon= Double.parseDouble(longitude);
+//        LatLng latLng = new LatLng(lat, lon);
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//        mMap.addMarker(new MarkerOptions().position(latLng).title("Student"));
+//        //getDirection(latLng);
+//            // Toast.makeText(StudentMapsActivity.this, "my", Toast.LENGTH_SHORT).show();
+//
+//
+//
+//        i=2;}
     //    mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
 
 
@@ -138,87 +214,15 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
     }
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
-        //mLocationRequest = new LocationRequest();
-       // mLocationRequest.setInterval(500);
-       // mLocationRequest.setFastestInterval(500);
-       // requestlatlong();
-       // mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         if (ActivityCompat.checkSelfPermission(StudentMapsActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(StudentMapsActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
+            return; }
         loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
-
-        //double lati= Double.parseDouble(latitude);
-        // double longi= Double.parseDouble(longitude);
-        // LatLng exp = new LatLng(lati, longi);
-        // mMap.addPolyline(new PolylineOptions().add(latLng,exp).width(10).color(R.color.colorPrimaryDark));
         MarkerOptions distance = new MarkerOptions();
-        // distance.position(exp);
         distance.title("Destination");
         float results[] = new float[5];
-        //Location.distanceBetween(latLng.latitude, latLng.longitude, exp.latitude,exp.longitude, results);
         distance.snippet("Distance = " + results[0] + "m");
-        //mMap.addMarker(distance);
-        // DatabaseReference georef = FirebaseDatabase.getInstance().getReference("DriverLocation");
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Student").child(userId);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    String store= dataSnapshot.child("busnumber").getValue(String.class);
-                    final DatabaseReference mref = FirebaseDatabase.getInstance().getReference();
-                    mref.child("Driver").orderByChild("busnumber").equalTo(store)
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    Log.i("Data Received",dataSnapshot.toString());
-                                    if (dataSnapshot.exists()) {
-                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                            Log.i("Data", ds.getValue(Driver.class).id);
-                                            Driver driver = ds.getValue(Driver.class);
-                                            String id = driver.id; //it will have id stored in it, you can use it further as you like
-                                            mref.child("DriverLocation").child(id).child("l").addValueEventListener(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                    String lat = String.valueOf(dataSnapshot.child("0").getValue(Double.class));
-                                                    String lon = String.valueOf(dataSnapshot.child("1").getValue(Double.class));
-                                                    Log.i("Data", String.valueOf(dataSnapshot.child("0").getValue(Double.class)));
-                                                    Log.i("Data", String.valueOf(dataSnapshot.child("1").getValue(Double.class)));
-                                                    double clat= Double.parseDouble(lat);
-                                                    double clon= Double.parseDouble(lon);
-                                                    LatLng latLng = new LatLng(clat, clon);
-                                                    Toast.makeText(StudentMapsActivity.this, "new "+lat + "    " + lon, Toast.LENGTH_SHORT).show();
-                                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                                                    mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
-//
-                                                }
 
-                                                @Override
-                                                public void onCancelled(DatabaseError databaseError) {
-
-                                                }
-                                            });
-
-                                        }
-//
-                                    }
-                                    else{Toast.makeText(StudentMapsActivity.this, "No Snapshot", Toast.LENGTH_SHORT).show();}
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });}
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
    }
 
