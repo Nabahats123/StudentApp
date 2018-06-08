@@ -7,6 +7,36 @@ package com.example.nabahat.studentapp;
 public class Student {
 
     public String id;
+    public String year;
+
+    public Student(String id, String year, String program, String regnum, String username, String email, String password, String phonenumber, String busnumber) {
+        this.id = id;
+        this.year = year;
+        this.program = program;
+        this.regnum = regnum;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.phonenumber = phonenumber;
+        this.busnumber = busnumber;
+    }
+
+    public String program;
+    public String regnum;
+    public String username;
+    public String email;
+    public String password;
+    public String phonenumber;
+    public String busnumber;
+
+
+
+
+    public Student() {
+
+    }
+
+
 
     public String getId() {
         return id;
@@ -55,28 +85,4 @@ public class Student {
     public void setBusnumber(String busnumber) {
         this.busnumber = busnumber;
     }
-
-    public String username;
-    public String email;
-    public String password;
-    public String phonenumber;
-    public String busnumber;
-
-
-
-
-    public Student() {
-
-    }
-
-    public Student(String id, String username, String email, String password, String phonenumber, String busnumber) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.phonenumber = phonenumber;
-        this.busnumber = busnumber;
-
-    }
-
 }

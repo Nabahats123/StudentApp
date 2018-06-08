@@ -4,47 +4,146 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical"
 
     tools:context="com.example.nabahat.studentapp.GiveFeedback"
     tools:layout_editor_absoluteX="8dp"
-    tools:layout_editor_absoluteY="8dp">
+    tools:layout_editor_absoluteY="8dp"
+    android:background="@color/graylight">
 
-    <TextView
-        android:id="@+id/Driver_Details"
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:background="@drawable/gradientbackground"
+        android:layout_height="175dp">
+
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="400dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/chat"
+                        android:tint="@color/background_color" />
+
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:text="Give Feedback"
+                        android:textColor="@color/background_color"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:text="Driver Details"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        tools:text="Driver Details" />
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+        <TextView
+            android:id="@+id/Displaydetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="3dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:text="Details"
+            android:textAlignment="center"
+            android:textColor="@color/background_color"
+            android:textSize="20dp" />
 
-    <TextView
-        android:id="@+id/Displaydetails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Details" />
+        <RatingBar
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:id="@+id/ratingBar2"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:numStars="5"
+            android:stepSize="1"
+            android:progressTint="@color/background_color"/>
+        <TextView
 
-    <RatingBar
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Average"
+            android:id="@+id/rating"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/background_color"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            />
+
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Give Feedback"
+                    android:textColor="@color/background_color"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+
+
+                    />
+
+
+
+
+        <RatingBar
+
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"
-        android:stepSize="1" />
+        android:stepSize="1"
+        android:layout_margin="10dp"
+            android:paddingTop="5dp"
+        android:layout_gravity="center"
+            android:progressTint="@color/background_color"/>
 
     <EditText
         android:id="@+id/lay_feedback"
@@ -53,16 +152,28 @@
         android:gravity="center_vertical|center_horizontal"
         android:hint="Enter your Feedback"
         tools:layout_editor_absoluteX="70dp"
-        tools:layout_editor_absoluteY="80dp" />
+        tools:layout_editor_absoluteY="80dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
+
+        />
+
+
 
     <Button
         android:id="@+id/lay_send"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Send" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/buttonstyleithgradient"
+        android:text="Send"
+        android:textColor="#fff"  />
+            </LinearLayout>
+
+</ScrollView>
+    </LinearLayout>
+
 </LinearLayout>

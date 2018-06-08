@@ -8,12 +8,28 @@ import java.util.Date;
 
 public class Feedback {
 
+
+    String Feedback;
+    float Rating;
+    String Date;
+    String Studentid;
+    String Driverid;
+
+    Feedback(){}
+
     public Feedback(String studentid, String driverid, String feedback,String date , float rating) {
         Studentid = studentid;
         Driverid = driverid;
         Feedback = feedback;
         Rating = rating;
         Date = date;
+    }
+
+    public Feedback(String studentid, String driverid, String feedback, float rating) {
+        Studentid = studentid;
+        Driverid = driverid;
+        Feedback = feedback;
+        Rating = rating;
     }
 
     public String getStudentid() {
@@ -40,11 +56,11 @@ public class Feedback {
         Feedback = feedback;
     }
 
-    String Studentid;
-    String Driverid;
-    String Feedback;
-    float Rating;
-    String Date;
+
+
+
+
+
 
     public float getRating() {
         return Rating;
@@ -54,7 +70,5 @@ public class Feedback {
         Rating = rating;
     }
 
-
-    Feedback(){}
 
 }

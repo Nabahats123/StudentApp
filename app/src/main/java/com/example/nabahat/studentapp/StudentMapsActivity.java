@@ -69,6 +69,7 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
     ArrayList<LatLng> MarkerPoints;
     String latitude = "";
     String longitude = "";
+    Double slat, slon;
     private static final int[] COLORS = new int[]{R.color.colorPrimaryDark,R.color.colorPrimary,R.color.colorPrimary,R.color.colorAccent,R.color.primary_dark_material_light};
     LocationRequest mLocationRequest;
     FirebaseDatabase ref;
@@ -110,9 +111,11 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
                                     Log.i("Data Received",dataSnapshot.toString());
                                     if (dataSnapshot.exists()) {
                                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                            Log.i("Data", ds.getValue(Driver.class).id);
+//                                            Log.i("Data", ds.getValue(Driver.class).id);
                                             Driver driver = ds.getValue(Driver.class);
-                                            String id = driver.id; //it will have id stored in it, you can use it further as you like
+                                            String id = driver.id;
+                                           // Toast.makeText(StudentMapsActivity.this, id, Toast.LENGTH_SHORT).show();
+                                            //it will have id stored in it, you can use it further as you like
                                             mref.child("DriverLocation").child(id).child("l").addValueEventListener(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -123,7 +126,7 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
                                                     double clat= Double.parseDouble(lat);
                                                     double clon= Double.parseDouble(lon);
                                                     LatLng latLng = new LatLng(clat, clon);
-                                                    Toast.makeText(StudentMapsActivity.this, "N Cordinates"+lat + "    " + lon, Toast.LENGTH_SHORT).show();
+                                                    //Toast.makeText(StudentMapsActivity.this, "N Cordinates"+lat + "    " + lon, Toast.LENGTH_SHORT).show();
                                                     if(userLocation==null){
                                                         MarkerOptions options = new MarkerOptions()
                                                                 .title("Location")
@@ -133,12 +136,20 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
                                                         userLocation = mMap.addMarker(options);
 
 
+//                                                        Float dis = mLastLocation.distanceTo(loc);
+//                                                        Toast.makeText(StudentMapsActivity.this, dis.toString(), Toast.LENGTH_SHORT).show();
+
+
+
+
                                                     }else{
                                                         userLocation.setPosition(latLng);
                                                     }
                                                     CameraPosition cameraPosition = CameraPosition.builder().target(latLng).zoom(18).build();
                                                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                                                }
+
+
+                                                 }
 
                                                 @Override
                                                 public void onCancelled(DatabaseError databaseError) {
@@ -172,15 +183,9 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mMap.setMyLocationEnabled(true);
-//        if (i==1){double lat= Double.parseDouble(latitude);
-//        double lon= Double.parseDouble(longitude);
-//        LatLng latLng = new LatLng(lat, lon);
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-//        mMap.addMarker(new MarkerOptions().position(latLng).title("Student"));
-//        //getDirection(latLng);
-//            // Toast.makeText(StudentMapsActivity.this, "my", Toast.LENGTH_SHORT).show();
-//
+
+        //getDirection(latLng);
+
 //
 //
 //        i=2;}
@@ -201,6 +206,8 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
     @Override
     public void onLocationChanged(Location location) {
         mLastLocation = location;
+
+
 
       }
     @Override

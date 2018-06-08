@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,18 +31,22 @@ import java.util.Date;
 public class GiveFeedback extends AppCompatActivity {
 
     EditText Feedback;
-    TextView Details;
+    TextView Details, average;
     Button Send;
-    RatingBar Bar;
-    String name, email, number;
+    RatingBar Bar, Bar2;
+    String name, email, number, did;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_give_feedback);
         Details = (TextView) findViewById(R.id.Displaydetails);
+        average = (TextView) findViewById(R.id.rating);
         Feedback = (EditText) findViewById(R.id.lay_feedback);
         Send = (Button) findViewById(R.id.lay_send);
         Bar = (RatingBar) findViewById(R.id.ratingBar);
+        Bar2 = (RatingBar) findViewById(R.id.ratingBar2);
+
+
         Intent iin= getIntent();
         Bundle b = iin.getExtras();
         if(b!=null)
@@ -49,11 +54,52 @@ public class GiveFeedback extends AppCompatActivity {
             name =(String) b.get("Name");
             email = (String) b.get("Email");
             number = (String) b.get("Phone Number");
-            Details.setText("Name: "+ name+"\n" + "Email: "+ email+"\n"+"Phone: "+ number+"\n");
+            Details.setText(name+"\n" + email+"\n"+ number+"\n");
+            did = (String) b.get("id");
 
-            //Toast.makeText(StudentMapsActivity.this, j, Toast.LENGTH_SHORT).show();
+
 
         }
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Driver").child(did);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i("Data Received",dataSnapshot.toString());
+                if (dataSnapshot.exists()) {
+
+
+
+
+                    int ratingsum = 0;
+                    int ratingtotal = 0;
+                    float ratingsaverage = 0;
+                    for (DataSnapshot child: dataSnapshot.child("ratings").getChildren()){
+                        ratingsum = ratingsum + Integer.valueOf(child.getValue().toString());
+                        ratingtotal++;
+
+                    }
+                    if(ratingtotal!=0){
+                        ratingsaverage = ratingsum/ratingtotal;
+                        Bar2.setRating(ratingsaverage);
+                        String avg = Float.toString(ratingsaverage);
+
+                        average.setText(avg+"("+ratingtotal+")");
+                        //Toast.makeText(ViewProfile.this, avg+" ("+ratingtotal+") " , Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+                else{
+                  //  Toast.makeText(ViewProfile.this, "No Snapshot", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         Send.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -61,8 +107,6 @@ public class GiveFeedback extends AppCompatActivity {
 
                 final float ratings = Bar.getRating();
                 final Date c = Calendar.getInstance().getTime();
-              //  System.out.println("Current time => " + c);
-
                 SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                 final String formattedDate = df.format(c);
                 final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -79,20 +123,34 @@ public class GiveFeedback extends AppCompatActivity {
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             Log.i("Data Received",dataSnapshot.toString());
                                             if (dataSnapshot.exists()) {
+                                                String name = "";
+                                                String email = "";
+                                                String number = "";
+                                                String drivid = "";
+
                                                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                                    Log.i("Data", ds.getValue(Driver.class).id);
                                                     Driver driver = ds.getValue(Driver.class);
-                                                    String id = driver.id;
+                                                    name = driver.username;
+                                                    email = driver.email;
+                                                    number = driver.phonenumber;
+                                                    drivid = driver.id;
 
-                                                    Feedback feedbackstore = new Feedback(userId,id,Feedback.getText().toString(), formattedDate, ratings);//it will have id stored in it, you can use it further as you like
-                                                    mref.child("Feedback").child(id).setValue(feedbackstore);
-                                                    DatabaseReference newref = FirebaseDatabase.getInstance().getReference().child("Driver").child(id);
-                                                    newref.child("ratings").child(userId).setValue(ratings);
-                                                    //Toast.makeText(GiveFeedback.this, name+email+number, Toast.LENGTH_SHORT).show();
-                                                    startActivity(new Intent(GiveFeedback.this, StudentHome.class));
-                                                    finish();
+                                                }
 
-                                               }
+                                                        DatabaseReference mdref = FirebaseDatabase.getInstance().getReference("Feedback");
+                                                        Feedback feedbackstore = new Feedback(userId,drivid,Feedback.getText().toString(), ratings);//it will have id stored in it, you can use it further as you like
+
+
+
+                                               mdref.child(userId).setValue(feedbackstore);
+                                                DatabaseReference newref = FirebaseDatabase.getInstance().getReference().child("Driver").child(drivid);
+                                                       newref.child("ratings").child(userId).setValue(ratings);
+                                                        startActivity(new Intent(GiveFeedback.this, StudentHome.class));
+                                                        finish();
+
+
+
+
 
 
                                             }

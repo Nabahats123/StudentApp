@@ -1,7 +1,155 @@
 <resources>
-    <string name="app_name">StudentApp</string>
+    <string name="app_name">Student</string>
     <string name="title_activity_student_maps">Map</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="email">Email Id</string>
+    <string name="passowrd">Password</string>
+    <string name="login">LOGIN</string>
+    <string name="show_pwd">Show Password</string>
+    <string name="hide_pwd">Hide Password</string>
+    <string name="forgot">Forgot password?</string>
+    <string name="closebutton">Close Button for Activity</string>
+    <string name="newUser">Not a Member yet? Sign Up here.</string>
+    <string name="fullName">Full Name</string>
+    <string name="mobileNumber">Mobile Number</string>
+    <string name="location">YEAR</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="terms_conditions">By clicking SignUp you agree all the Terms and Conditions.</string>
+    <string name="signUp">SIGN UP</string>
+    <string name="already_user">Already have Account? Login here.</string>
+    <string name="registered_emailid">Please enter your Registered Email Id below:</string>
+    <string name="submit">SUBMIT</string>
+    <string name="back">BACK</string>
+
+    <string name="prompt">Choose Route</string>
+    <string-array name="Bus_Numbers">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+
+
+    <string-array name="years">
+
+        <item>FA00</item>
+        <item>FA01</item>
+        <item>FA02</item>
+        <item>FA03</item>
+        <item>FA04</item>
+        <item>FA05</item>
+        <item>FA06</item>
+        <item>FA07</item>
+        <item>FA08</item>
+        <item>FA09</item>
+        <item>FA10</item>
+        <item>FA11</item>
+        <item>FA12</item>
+        <item>FA13</item>
+        <item>FA14</item>
+        <item>FA15</item>
+        <item>FA16</item>
+        <item>FA17</item>
+        <item>FA18</item>
+        <item>FA99</item>
+        <item>SP00</item>
+        <item>SP01</item>
+        <item>SP02</item>
+        <item>SP03</item>
+        <item>SP04</item>
+        <item>SP05</item>
+        <item>SP06</item>
+        <item>SP07</item>
+        <item>SP08</item>
+        <item>SP09</item>
+        <item>SP10</item>
+        <item>SP11</item>
+        <item>SP12</item>
+        <item>SP13</item>
+        <item>SP14</item>
+        <item>SP15</item>
+        <item>SP16</item>
+        <item>SP17</item>
+        <item>SP18</item>
+        <item>SU00</item>
+        <item>SU01</item>
+        <item>SU02</item>
+        <item>SU03</item>
+        <item>SU04</item>
+        <item>SU05</item>
+        <item>SU06</item>
+        <item>SU07</item>
+        <item>SU08</item>
+        <item>SU09</item>
+        <item>SU10</item>
+        <item>SU11</item>
+        <item>SU12</item>
+        <item>SU13</item>
+        <item>SU14</item>
+        <item>SU15</item>
+        <item>SU16</item>
+        <item>SU17</item>
+        <item>SU18</item>
+    </string-array>
+
+    <string-array name="coursename">
+        <item>BAF</item>
+        <item>BAR</item>
+        <item>BBA</item>
+        <item>BBE</item>
+        <item>BBI</item>
+        <item>BBS</item>
+        <item>BCE</item>
+        <item>BCS</item>
+        <item>BDE</item>
+        <item>BEC</item>
+        <item>BEE</item>
+        <item>BEL</item>
+        <item>BES</item>
+        <item>BET</item>
+        <item>BIT</item>
+        <item>BPH</item>
+        <item>BPY</item>
+        <item>BS(ECE)</item>
+        <item>BSB</item>
+        <item>BSD</item>
+        <item>BSE</item>
+        <item>BSI</item>
+        <item>BSM</item>
+        <item>BSO</item>
+        <item>BSS</item>
+        <item>BTN</item>
+        <item>ECE</item>
+        <item>EEE</item>
+        <item>EPE</item>
+        <item>MB4</item>
+        <item>MB7</item>
+        <item>MBA</item>
+        <item>MBI</item>
+        <item>MBE</item>
+        <item>MIE</item>
+        <item>MIT</item>
+        <item>MME</item>
+    </string-array>
+
+    <string name="title_activity_view_profile">ViewProfile</string>
 </resources>
