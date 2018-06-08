@@ -90,7 +90,7 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
 //        Intent iin= getIntent();
 //        Bundle b = iin.getExtras();
 //        if(b!=null)
-//        {
+//        { 
 //            latitude =(String) b.get("latitude");
 //            longitude = (String) b.get("longitude");
 //            //Toast.makeText(StudentMapsActivity.this, j, Toast.LENGTH_SHORT).show();
